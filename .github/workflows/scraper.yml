@@ -1,0 +1,29 @@
+name: Automated Web Scraper
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests pandas beautifulsoup4 openpyxl
+
+      - name: Run script
+        run: python scraper.py
+
+      - name: Upload output
+        uses: actions/upload-artifact@v3
+        with:
+          name: scraped-data
+          path: products.xlsx
