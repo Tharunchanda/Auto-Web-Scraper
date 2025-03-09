@@ -20,7 +20,7 @@ jobs:
         run: pip install requests pandas beautifulsoup4 openpyxl
 
       - name: Run script
-        run: python scraper.py
+        run: python Scraper.py
 
       - name: Upload output
         uses: actions/upload-artifact@v3
