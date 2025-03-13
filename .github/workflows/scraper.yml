@@ -2,7 +2,7 @@ name: Automated Web Scraper
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour
+    - cron: '0 0 * * *'  # Runs once per day at midnight UTC
 
 jobs:
   scrape:
