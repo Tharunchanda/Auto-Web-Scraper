@@ -19,10 +19,19 @@ jobs:
       - name: Install dependencies
         run: pip install requests pandas beautifulsoup4 openpyxl
 
-      - name: Run script
+      - name: Download existing data (if available)
+        run: |
+          if [ -f products.xlsx ]; then
+            echo "Existing file found, using it."
+          else
+            echo "No existing file found, creating a new one."
+            touch products.xlsx
+          fi
+
+      - name: Run scraper
         run: python Scraper.py
 
-      - name: Upload output
+      - name: Upload updated output
         uses: actions/upload-artifact@v4
         with:
           name: scraped-data
