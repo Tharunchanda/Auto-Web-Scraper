@@ -1,36 +1,36 @@
-name: Scrape and Update Data
+name: Web Scraping Automation
 
-on:
+on: 
+  push:
+    branches:
+      - main
   schedule:
-    - cron: "0 0 * * *"  # Runs daily at midnight UTC
-  workflow_dispatch:  # Allows manual trigger
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true  # Ensures GitHub credentials persist
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
 
       - name: Install dependencies
-        run: |
-          pip install requests beautifulsoup4 pandas openpyxl
+        run: pip install requests pandas beautifulsoup4 openpyxl
 
-      - name: Run Scraper.py
-        run: python Scraper.py  # Ensure your script is named "Scraper.py"
-
-      - name: Commit and push if changes exist
+      - name: Download existing data (if available)
         run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
-          git add products.xlsx
-          git diff --quiet && git diff --staged --quiet || git commit -m "Updated products.xlsx with new data"
-          git push
+          if [ -f products.xlsx ]; then
+            echo "Existing file found, using it."
+          else
+            echo "No existing file found, creating a new one."
+            touch products.xlsx
+          fi
+
+      - name: Run scraper
+        run: python Scraper.py
+
+      - name: Upload updated output
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraped-data
+          path: products.xlsx
