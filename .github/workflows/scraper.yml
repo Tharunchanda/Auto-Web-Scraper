@@ -1,36 +1,36 @@
-name: Web Scraping Automation
+# name: Web Scraping Automation
 
-on: 
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+# on: 
+#   push:
+#     branches:
+#       - main
+#   schedule:
+#     - cron: '0 0 * * *'  # Runs daily at midnight UTC
 
-jobs:
-  scrape:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+# jobs:
+#   scrape:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: pip install requests pandas beautifulsoup4 openpyxl
+#       - name: Install dependencies
+#         run: pip install requests pandas beautifulsoup4 openpyxl
 
-      - name: Download existing data (if available)
-        run: |
-          if [ -f products.xlsx ]; then
-            echo "Existing file found, using it."
-          else
-            echo "No existing file found, creating a new one."
-            touch products.xlsx
-          fi
+#       - name: Download existing data (if available)
+#         run: |
+#           if [ -f products.xlsx ]; then
+#             echo "Existing file found, using it."
+#           else
+#             echo "No existing file found, creating a new one."
+#             touch products.xlsx
+#           fi
 
-      - name: Run scraper
-        run: python Scraper.py
+#       - name: Run scraper
+#         run: python Scraper.py
 
-      - name: Upload updated output
-        uses: actions/upload-artifact@v4
-        with:
-          name: scraped-data
-          path: products.xlsx
+#       - name: Upload updated output
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: scraped-data
+#           path: products.xlsx
